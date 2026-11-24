@@ -55,7 +55,8 @@ export class HomeService {
     const banners = this.getBanners();
     const quickCategories = await this.categoryService.getQuickCategories();
     const trendingProducts = await this.productService.getProducts({ trending: true, page: 1, limit: 10 });
-    const nearbyShops = await this.storeService.getNearbyStores({ lat, lng, radius: 8 });
+    const nearbyShops = await this.storeService.getNearbyStores({ lat, lng, radius: 8, type: 'boutique' });
+    const brandStores = await this.storeService.getBrandStores(lat, lng);
 
     return {
       deliverySla: '30-Minute Delivery',
@@ -64,6 +65,7 @@ export class HomeService {
       quickCategories,
       trendingProducts,
       nearbyShops,
+      brandStores,
     };
   }
 }

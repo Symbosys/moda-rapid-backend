@@ -139,7 +139,8 @@
 * `GET /v1/home/banners`
 * `GET /v1/categories/quick`
 * `GET /v1/categories`
-* `GET /v1/stores/nearby?lat=28.5584&lng=77.2023`
+* `GET /v1/stores/nearby?lat=28.5584&lng=77.2023&type=boutique` (Query: `type`='boutique'|'brand'|'all')
+* `GET /v1/stores/brands?lat=28.5584&lng=77.2023` (Official Brand Outlets: Nike, Adidas, Zara, Levi's)
 * `GET /v1/products?trending=true`
 * `GET /v1/products/:id` (Returns available sizes & colors matrix)
 * `GET /v1/products/:id/similar`

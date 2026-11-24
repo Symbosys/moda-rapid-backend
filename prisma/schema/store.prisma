@@ -17,6 +17,8 @@ model Store {
   isActive              Boolean  @default(true)
   estimatedDeliveryTime String   @default("20-30 min")
   serviceRadiusKm       Float    @default(7.0)
+  isBrandStore          Boolean  @default(false)
+  brandName             String?  @db.VarChar(100)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
@@ -26,4 +28,5 @@ model Store {
 
   @@index([latitude, longitude])
   @@index([isActive, isOpen])
+  @@index([isBrandStore])
 }

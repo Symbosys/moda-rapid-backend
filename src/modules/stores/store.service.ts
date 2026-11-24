@@ -12,6 +12,10 @@ export interface NearbyShopModel {
   productCount: number;
   isOpen: boolean;
   categories: string[];
+  isBrandStore: boolean;
+  brandName?: string;
+  tag?: string;
+  offerText?: string;
 }
 
 export class StoreService {
@@ -36,46 +40,130 @@ export class StoreService {
     return [
       {
         id: 's1',
-        name: 'Style Studio',
+        name: 'StyleHub',
         imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
-        distance: '0.8 km',
-        estimatedDeliveryTime: '20-25 min',
-        rating: 4.8,
-        productCount: 142,
+        distance: '1.2 km',
+        estimatedDeliveryTime: '20-30 min',
+        rating: 4.5,
+        productCount: 1420,
         isOpen: true,
         categories: ['Men', 'Women', 'Festive', 'Denim'],
+        isBrandStore: false,
+        tag: 'EXCLUSIVE BOUTIQUE',
+        offerText: 'Up to 50% OFF',
       },
       {
         id: 's2',
-        name: 'Fashion Hub',
+        name: 'UrbanWear',
         imageUrl: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
-        distance: '1.4 km',
+        distance: '1.8 km',
         estimatedDeliveryTime: '25-30 min',
-        rating: 4.6,
-        productCount: 98,
+        rating: 4.4,
+        productCount: 856,
         isOpen: true,
         categories: ['Ethnic', 'Casual', 'Accessories'],
+        isBrandStore: false,
+        offerText: 'Up to 40% OFF',
       },
       {
         id: 's3',
-        name: 'Zara Trends Boutique',
+        name: 'The Cloth Co.',
         imageUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc',
-        distance: '2.1 km',
+        distance: '2.4 km',
         estimatedDeliveryTime: '28-35 min',
-        rating: 4.9,
-        productCount: 210,
+        rating: 4.7,
+        productCount: 620,
         isOpen: true,
-        categories: ['Premium', 'Western', 'Footwear'],
+        categories: ['Western', 'Premium', 'Streetwear'],
+        isBrandStore: false,
+        offerText: 'Flat 30% OFF',
+      },
+      {
+        id: 'brand_nike',
+        name: 'Nike Flagship Outlet',
+        imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+        distance: '1.5 km',
+        estimatedDeliveryTime: '25-30 min',
+        rating: 4.9,
+        productCount: 420,
+        isOpen: true,
+        categories: ['Sportswear', 'Sneakers', 'Running'],
+        isBrandStore: true,
+        brandName: 'Nike',
+        tag: 'VERIFIED OUTLET • 30 MIN',
+        offerText: 'UP TO 40% OFF',
+      },
+      {
+        id: 'brand_adidas',
+        name: 'adidas Originals Store',
+        imageUrl: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f',
+        distance: '1.9 km',
+        estimatedDeliveryTime: '20-25 min',
+        rating: 4.8,
+        productCount: 380,
+        isOpen: true,
+        categories: ['Originals', 'Footwear', 'Tracksuits'],
+        isBrandStore: true,
+        brandName: 'adidas',
+        tag: 'ORIGINALS • 25 MIN',
+        offerText: 'FLAT 35% OFF',
+      },
+      {
+        id: 'brand_zara',
+        name: 'Zara Studio',
+        imageUrl: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b',
+        distance: '2.2 km',
+        estimatedDeliveryTime: '25-30 min',
+        rating: 4.9,
+        productCount: 510,
+        isOpen: true,
+        categories: ['Western', 'Dresses', 'Suits'],
+        isBrandStore: true,
+        brandName: 'Zara',
+        tag: 'STUDIO COLLECTION • 25 MIN',
+        offerText: 'UP TO 30% OFF',
+      },
+      {
+        id: 'brand_levis',
+        name: "Levi's 501 Original Store",
+        imageUrl: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0',
+        distance: '2.0 km',
+        estimatedDeliveryTime: '20-25 min',
+        rating: 4.8,
+        productCount: 290,
+        isOpen: true,
+        categories: ['Denim', 'Jackets', 'Jeans'],
+        isBrandStore: true,
+        brandName: "Levi's",
+        tag: 'ORIGINAL DENIM • 25 MIN',
+        offerText: 'UP TO 45% OFF',
       },
     ];
   }
 
   async getNearbyStores(query: NearbyStoresQueryInput): Promise<NearbyShopModel[]> {
     try {
-      const stores = await this.storeRepo.findAllActive();
+      const isBrandFilter =
+        query.type === 'brand' ? true : query.type === 'boutique' ? false : undefined;
+
+      const stores = await this.storeRepo.findAllActive({
+        isBrandStore: isBrandFilter,
+        brandName: query.brandName,
+      });
 
       if (stores.length === 0) {
-        return this.fallbackStores();
+        let fallbacks = this.fallbackStores();
+        if (query.type === 'brand') {
+          fallbacks = fallbacks.filter((s) => s.isBrandStore);
+        } else if (query.type === 'boutique') {
+          fallbacks = fallbacks.filter((s) => !s.isBrandStore);
+        }
+        if (query.brandName) {
+          fallbacks = fallbacks.filter(
+            (s) => s.brandName?.toLowerCase() === query.brandName?.toLowerCase()
+          );
+        }
+        return fallbacks;
       }
 
       return stores.map((s) => {
@@ -90,11 +178,29 @@ export class StoreService {
           productCount: s.reviewCount,
           isOpen: s.isOpen,
           categories: ['Men', 'Women', 'Casual', 'Ethnic'],
+          isBrandStore: s.isBrandStore,
+          brandName: s.brandName || undefined,
+          tag: s.isBrandStore ? 'VERIFIED OUTLET • 30 MIN' : 'LOCAL BOUTIQUE',
         };
       });
     } catch {
-      return this.fallbackStores();
+      let fallbacks = this.fallbackStores();
+      if (query.type === 'brand') {
+        fallbacks = fallbacks.filter((s) => s.isBrandStore);
+      } else if (query.type === 'boutique') {
+        fallbacks = fallbacks.filter((s) => !s.isBrandStore);
+      }
+      return fallbacks;
     }
+  }
+
+  async getBrandStores(lat = 28.5584, lng = 77.2023): Promise<NearbyShopModel[]> {
+    return this.getNearbyStores({
+      lat,
+      lng,
+      radius: 12.0,
+      type: 'brand',
+    });
   }
 
   async getStoreById(storeId: string) {

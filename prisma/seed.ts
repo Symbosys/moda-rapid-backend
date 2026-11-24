@@ -60,6 +60,33 @@ async function seed() {
       isActive: true,
       estimatedDeliveryTime: '25-30 min',
       serviceRadiusKm: 8.0,
+      isBrandStore: false,
+    },
+  });
+
+  const store3 = await prisma.store.upsert({
+    where: { slug: 'nike-flagship' },
+    update: {},
+    create: {
+      id: 'brand_nike',
+      name: 'Nike Flagship Outlet',
+      slug: 'nike-flagship',
+      phone: '+919876543212',
+      email: 'outlet@nike.com',
+      bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+      addressText: 'Select Citywalk Mall, Saket',
+      city: 'New Delhi',
+      pincode: '110017',
+      latitude: 28.5284,
+      longitude: 77.2185,
+      rating: 4.9,
+      reviewCount: 420,
+      isOpen: true,
+      isActive: true,
+      estimatedDeliveryTime: '25-30 min',
+      serviceRadiusKm: 10.0,
+      isBrandStore: true,
+      brandName: 'Nike',
     },
   });
 

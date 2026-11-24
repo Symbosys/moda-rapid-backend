@@ -154,6 +154,9 @@ async function runE2E() {
   const nearbyStores = await request('GET', '/v1/stores/nearby?lat=28.5584&lng=77.2023');
   record('14. Nearby Local Stores', 'GET /v1/stores/nearby', nearbyStores, 200);
 
+  const brandStores = await request('GET', '/v1/stores/brands');
+  record('14b. Official Brand Stores', 'GET /v1/stores/brands', brandStores, 200);
+
   // 8. Products & Search
   const products = await request('GET', '/v1/products');
   record('15. Product Catalog', 'GET /v1/products', products, 200);

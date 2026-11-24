@@ -13,6 +13,8 @@ router.get(
   asyncHandler(controller.getNearbyStores)
 );
 
+router.get('/brands', asyncHandler(controller.getBrandStores));
+
 router.get('/:id', asyncHandler(controller.getStoreDetails));
 
 export const storeRoutes = router;
