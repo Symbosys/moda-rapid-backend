@@ -1,0 +1,39 @@
+enum PaymentMethodType {
+  UPI
+  CARD
+  NET_BANKING
+  COD
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+model Payment {
+  id                  String            @id @default(uuid())
+  orderId             String
+  paymentMethod       PaymentMethodType
+  gatewayProvider     String            @default("RAZORPAY")
+  gatewayOrderId      String?           @db.VarChar(100)
+  gatewayPaymentId    String?           @db.VarChar(100)
+  amount              Decimal           @db.Decimal(10, 2)
+  currency            String            @default("INR") @db.VarChar(10)
+  status              PaymentStatus     @default(PENDING)
+  upiVpa              String?           @db.VarChar(100)
+  cardNetwork         String?           @db.VarChar(50)
+  cardLast4           String?           @db.VarChar(4)
+  bankName            String?           @db.VarChar(100)
+  codCollectionStatus String?           @default("PENDING")
+  rawGatewayResponse  Json?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  order               Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([gatewayOrderId])
+}

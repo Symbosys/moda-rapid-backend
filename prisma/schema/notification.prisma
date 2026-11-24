@@ -1,0 +1,20 @@
+enum NotificationType {
+  ORDER
+  OFFER
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String           @db.VarChar(150)
+  message   String           @db.Text
+  type      NotificationType @default(ORDER)
+  orderId   String?          @db.VarChar(100)
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+}

@@ -1,0 +1,40 @@
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id            String         @id @default(uuid())
+  phoneNumber   String         @unique @db.VarChar(15)
+  fullName      String?        @db.VarChar(100)
+  email         String?        @unique @db.VarChar(150)
+  avatarUrl     String?        @db.VarChar(500)
+  role          Role           @default(CUSTOMER)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  addresses     Address[]
+  cart          Cart?
+  wishlists     Wishlist[]
+  orders        Order[]
+  notifications Notification[]
+  otpSessions   OtpSession[]
+
+  @@index([phoneNumber])
+}
+
+model OtpSession {
+  id          String   @id @default(uuid())
+  phoneNumber String   @db.VarChar(15)
+  otpHash     String   @db.VarChar(255)
+  attempts    Int      @default(0)
+  isVerified  Boolean  @default(false)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([phoneNumber, isVerified])
+}

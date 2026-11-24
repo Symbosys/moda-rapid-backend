@@ -1,0 +1,29 @@
+model Store {
+  id                    String   @id @default(uuid())
+  name                  String   @db.VarChar(150)
+  slug                  String   @unique @db.VarChar(150)
+  phone                 String   @db.VarChar(15)
+  email                 String?  @db.VarChar(150)
+  bannerUrl             String   @db.VarChar(500)
+  logoUrl               String?  @db.VarChar(500)
+  addressText           String   @db.VarChar(500)
+  city                  String   @db.VarChar(100)
+  pincode               String   @db.VarChar(10)
+  latitude              Float
+  longitude             Float
+  rating                Float    @default(4.5)
+  reviewCount           Int      @default(0)
+  isOpen                Boolean  @default(true)
+  isActive              Boolean  @default(true)
+  estimatedDeliveryTime String   @default("20-30 min")
+  serviceRadiusKm       Float    @default(7.0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  products              Product[]
+  orders                Order[]
+  carts                 Cart[]
+
+  @@index([latitude, longitude])
+  @@index([isActive, isOpen])
+}

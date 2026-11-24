@@ -1,0 +1,18 @@
+model Category {
+  id        String     @id @default(uuid())
+  name      String     @db.VarChar(100)
+  slug      String     @unique @db.VarChar(100)
+  icon      String     @db.VarChar(100)
+  imageUrl  String?    @db.VarChar(500)
+  parentId  String?
+  sortOrder Int        @default(0)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  parent    Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryHierarchy")
+  products  Product[]
+
+  @@index([parentId])
+}

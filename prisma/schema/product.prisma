@@ -1,0 +1,51 @@
+model Product {
+  id                String           @id @default(uuid())
+  storeId           String
+  categoryId        String
+  name              String           @db.VarChar(200)
+  brand             String           @db.VarChar(100)
+  description       String?          @db.Text
+  sellingPrice      Decimal          @db.Decimal(10, 2)
+  originalPrice     Decimal          @db.Decimal(10, 2)
+  discountPercent   Int?
+  imageUrl          String           @db.VarChar(500)
+  galleryUrls       String[]         @default([])
+  deliveryEta       String?          @default("25 mins")
+  isExpressDelivery Boolean          @default(true)
+  isActive          Boolean          @default(true)
+  rating            Float            @default(4.5)
+  reviewCount       Int              @default(0)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  store             Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  category          Category         @relation(fields: [categoryId], references: [id])
+  variants          ProductVariant[]
+  wishlists         Wishlist[]
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([brand])
+  @@index([isActive])
+}
+
+model ProductVariant {
+  id            String      @id @default(uuid())
+  productId     String
+  size          String      @db.VarChar(20)
+  color         String      @db.VarChar(50)
+  stockQuantity Int         @default(0)
+  sku           String?     @unique @db.VarChar(100)
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+
+  @@unique([productId, size, color])
+  @@index([productId])
+}

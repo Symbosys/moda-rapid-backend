@@ -1,0 +1,8 @@
+model SupportFaq {
+  id        String   @id @default(uuid())
+  category  String   @db.VarChar(100)
+  question  String   @db.VarChar(300)
+  answer    String   @db.Text
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+}

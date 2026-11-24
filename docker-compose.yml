@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: modarapp-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://modar_admin:modar_secure_pass_2026@postgres:5432/modarapp_db?schema=public
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_ACCESS_SECRET=modarapp_production_super_secret_jwt_access_2026
+      - JWT_REFRESH_SECRET=modarapp_production_super_secret_jwt_refresh_2026
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: modarapp-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: modar_admin
+      POSTGRES_PASSWORD: modar_secure_pass_2026
+      POSTGRES_DB: modarapp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U modar_admin -d modarapp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: modarapp-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
