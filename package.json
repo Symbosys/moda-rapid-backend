@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "nodemon --exec 'ts-node' src/server.ts",
+    "dev": "nodemon",
     "lint": "eslint ./src",
     "seed": "ts-node prisma/seed.ts",
     "test:e2e": "ts-node scripts/e2e-test.ts"

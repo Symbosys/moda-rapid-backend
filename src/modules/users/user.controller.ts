@@ -8,14 +8,16 @@ export class UserController {
 
   getProfile = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.userId;
-    const profile = await this.userService.getProfile(userId);
+    const phoneNumber = (req.user as any)?.phoneNumber;
+    const profile = await this.userService.getProfile(userId, phoneNumber);
 
     ApiResponse.success(res, profile, 'User profile fetched successfully', HttpStatus.OK);
   };
 
   updateProfile = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.userId;
-    const updated = await this.userService.updateProfile(userId, req.body);
+    const phoneNumber = (req.user as any)?.phoneNumber;
+    const updated = await this.userService.updateProfile(userId, req.body, phoneNumber);
 
     ApiResponse.success(res, updated, 'Profile updated successfully', HttpStatus.OK);
   };

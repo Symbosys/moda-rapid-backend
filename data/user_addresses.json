@@ -1,0 +1,32 @@
+{
+  "7c4e6313-afd2-42db-88b1-55eb6ef5a3ce": [
+    {
+      "id": "5e638dbd-4a04-4d7a-8a09-9ce97cbc8e05",
+      "tag": "Home",
+      "houseNo": "F/193, Harmu Housing Colony, Delatoli, Ranchi, Jharkhand 834002, India",
+      "area": "Delatoli",
+      "landmark": "Auto-detected via GPS",
+      "city": "Ranchi",
+      "pincode": "834002",
+      "contactPhone": "+919334804356",
+      "latitude": 23.3574007,
+      "longitude": 85.311437,
+      "isDefault": true
+    }
+  ],
+  "278cdb35-9cf7-4576-b212-ec642294ef7e": [
+    {
+      "id": "f12afce7-0820-495a-8770-c7cb6d99717e",
+      "tag": "Home",
+      "houseNo": "F/193, Harmu Housing Colony, Delatoli, Ranchi, Jharkhand 834002, India",
+      "area": "Delatoli",
+      "landmark": "Auto-detected via GPS",
+      "city": "Ranchi",
+      "pincode": "834002",
+      "contactPhone": "+919334804356",
+      "latitude": 23.3573874,
+      "longitude": 85.3113929,
+      "isDefault": true
+    }
+  ]
+}

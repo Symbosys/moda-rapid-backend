@@ -17,7 +17,7 @@ export function createApp(): Application {
     cors({
       origin: '*',
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Client-Platform', 'X-App-Version'],
     })
   );
   app.use(express.json({ limit: '10mb' }));

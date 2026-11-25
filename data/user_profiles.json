@@ -1,0 +1,57 @@
+{
+  "e4b71e4b-c362-486b-9f70-960e56281c41": {
+    "id": "e4b71e4b-c362-486b-9f70-960e56281c41",
+    "phoneNumber": "+919334804356",
+    "fullName": "Saif",
+    "email": "saif@gmail.com",
+    "avatarUrl": "https://res.cloudinary.com/wovajtme/image/upload/v1795590977/modarapp/ikwzdzv2rrv6ewwjqkli.jpg",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T07:15:29.290Z",
+    "updatedAt": "2026-11-25T07:17:00.525Z"
+  },
+  "default": {
+    "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
+    "phoneNumber": "+919334804356",
+    "fullName": "Saif",
+    "email": "saif093348@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:12:17.961Z",
+    "updatedAt": "2026-11-25T12:14:18.125Z"
+  },
+  "+919334804356": {
+    "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
+    "phoneNumber": "+919334804356",
+    "fullName": "Saif",
+    "email": "saif093348@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:12:17.961Z",
+    "updatedAt": "2026-11-25T12:14:18.125Z"
+  },
+  "7c4e6313-afd2-42db-88b1-55eb6ef5a3ce": {
+    "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
+    "phoneNumber": "+919334804356",
+    "fullName": "Saif",
+    "email": "saif093348@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:12:17.961Z",
+    "updatedAt": "2026-11-25T12:12:17.961Z"
+  },
+  "278cdb35-9cf7-4576-b212-ec642294ef7e": {
+    "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
+    "phoneNumber": "+919334804356",
+    "fullName": "Saif",
+    "email": "saif093348@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:12:17.961Z",
+    "updatedAt": "2026-11-25T12:14:18.125Z"
+  }
+}

@@ -57,6 +57,13 @@ export class AuthRepository {
       },
     });
   }
+
+  async updateUserAvatar(userId: string, avatarUrl: string): Promise<User> {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { avatarUrl },
+    });
+  }
 }
 
 type DateTimeLike = Date | string | number;

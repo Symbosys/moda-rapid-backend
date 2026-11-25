@@ -26,7 +26,7 @@ async function bootstrap() {
   // Connect to Database
   await connectDatabase();
 
-  const server = httpServer.listen(env.PORT, () => {
+  const server = httpServer.listen(env.PORT, '0.0.0.0', () => {
     logger.info(`=================================================`);
     logger.info(`🚀 ModarApp Monolithic Server running on PORT: ${env.PORT}`);
     logger.info(`🌐 Environment: ${env.NODE_ENV}`);
@@ -58,6 +58,14 @@ async function bootstrap() {
 
   process.on('SIGTERM', () => handleShutdown('SIGTERM'));
   process.on('SIGINT', () => handleShutdown('SIGINT'));
+
+  process.on('unhandledRejection', (reason, promise) => {
+    logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  });
+
+  process.on('uncaughtException', (error) => {
+    logger.error('Uncaught Exception thrown:', error);
+  });
 }
 
 bootstrap().catch((error) => {

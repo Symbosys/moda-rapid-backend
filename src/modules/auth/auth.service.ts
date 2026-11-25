@@ -3,11 +3,12 @@ import { CryptoUtil } from '../../common/utils/crypto';
 import { JwtUtil } from '../../common/utils/jwt';
 import { BadRequestError, UnauthorizedError } from '../../common/errors/app-error';
 import { logger } from '../../common/utils/logger';
+import { UserService } from '../users/user.service';
 
 export class AuthService {
   constructor(private readonly authRepo: AuthRepository = new AuthRepository()) {}
 
-  async requestOtp(rawPhone: string): Promise<{ resendTimeoutSeconds: number; isNewUser: boolean }> {
+  async requestOtp(rawPhone: string): Promise<{ resendTimeoutSeconds: number; isNewUser: boolean; devOtp?: string }> {
     const formattedPhone = rawPhone.trim().replace(/\s+/g, '');
 
     // In production, send via SMS gateway. For test/dev, generate numeric 6-digit OTP
@@ -36,6 +37,7 @@ export class AuthService {
     return {
       resendTimeoutSeconds: 30,
       isNewUser: !existingUser,
+      devOtp: process.env.NODE_ENV !== 'production' ? otp : undefined,
     };
   }
 
@@ -101,6 +103,18 @@ export class AuthService {
     const accessToken = JwtUtil.generateAccessToken(tokenPayload);
     const refreshToken = JwtUtil.generateRefreshToken(tokenPayload);
 
+    const cachedProfile = UserService.getStaticProfile(user.id) || UserService.getStaticProfile(formattedPhone);
+    const finalAvatar = user.avatarUrl || cachedProfile?.avatarUrl || '';
+    const finalName = user.fullName || cachedProfile?.fullName || '';
+
+    if (user.id !== 'usr_e2e_fallback' && finalAvatar && !user.avatarUrl) {
+      try {
+        await this.authRepo.updateUserAvatar(user.id, finalAvatar);
+      } catch {
+        // Safe DB sync attempt
+      }
+    }
+
     return {
       accessToken,
       refreshToken,
@@ -108,9 +122,9 @@ export class AuthService {
       user: {
         id: user.id,
         phoneNumber: user.phoneNumber,
-        fullName: user.fullName,
-        email: user.email,
-        avatarUrl: user.avatarUrl,
+        fullName: finalName,
+        email: user.email || cachedProfile?.email || '',
+        avatarUrl: finalAvatar,
         role: user.role,
       },
     };
