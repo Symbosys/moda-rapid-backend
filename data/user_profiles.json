@@ -15,22 +15,22 @@
     "phoneNumber": "+919334804356",
     "fullName": "Saif",
     "email": "saif093348@gmail.com",
-    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "avatarUrl": "https://res.cloudinary.com/wovajtme/image/upload/v1795672229/modarapp/aqhmwxvuy9ggbvej0i15.jpg",
     "role": "CUSTOMER",
     "isActive": true,
     "createdAt": "2026-11-25T12:12:17.961Z",
-    "updatedAt": "2026-11-25T12:14:18.125Z"
+    "updatedAt": "2026-11-26T05:50:30.966Z"
   },
   "+919334804356": {
     "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
     "phoneNumber": "+919334804356",
     "fullName": "Saif",
     "email": "saif093348@gmail.com",
-    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "avatarUrl": "https://res.cloudinary.com/wovajtme/image/upload/v1795672229/modarapp/aqhmwxvuy9ggbvej0i15.jpg",
     "role": "CUSTOMER",
     "isActive": true,
     "createdAt": "2026-11-25T12:12:17.961Z",
-    "updatedAt": "2026-11-25T12:14:18.125Z"
+    "updatedAt": "2026-11-26T05:50:30.966Z"
   },
   "7c4e6313-afd2-42db-88b1-55eb6ef5a3ce": {
     "id": "278cdb35-9cf7-4576-b212-ec642294ef7e",
@@ -48,10 +48,32 @@
     "phoneNumber": "+919334804356",
     "fullName": "Saif",
     "email": "saif093348@gmail.com",
-    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKapge1IslOyx3JygdCQC8R3dboHUjwZpGjK3fT-o8_m7GNp8M=s96-c",
+    "avatarUrl": "https://res.cloudinary.com/wovajtme/image/upload/v1795672229/modarapp/aqhmwxvuy9ggbvej0i15.jpg",
     "role": "CUSTOMER",
     "isActive": true,
     "createdAt": "2026-11-25T12:12:17.961Z",
-    "updatedAt": "2026-11-25T12:14:18.125Z"
+    "updatedAt": "2026-11-26T05:50:30.966Z"
+  },
+  "7355f397-1902-4dfe-8946-a591dd2265b9": {
+    "id": "7355f397-1902-4dfe-8946-a591dd2265b9",
+    "phoneNumber": "+911236547890",
+    "fullName": "Sam Saif",
+    "email": "samsaif933@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIdpMRejLA0R0egd0jcnJcQ-Kv3kshoLJLlujpoiNdTajkZItH9=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:28:39.696Z",
+    "updatedAt": "2026-11-25T12:39:44.256Z"
+  },
+  "+911236547890": {
+    "id": "7355f397-1902-4dfe-8946-a591dd2265b9",
+    "phoneNumber": "+911236547890",
+    "fullName": "Sam Saif",
+    "email": "samsaif933@gmail.com",
+    "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocIdpMRejLA0R0egd0jcnJcQ-Kv3kshoLJLlujpoiNdTajkZItH9=s96-c",
+    "role": "CUSTOMER",
+    "isActive": true,
+    "createdAt": "2026-11-25T12:28:39.696Z",
+    "updatedAt": "2026-11-25T12:39:44.256Z"
   }
 }

@@ -17,6 +17,7 @@ import { orderRoutes } from '../modules/orders/order.routes';
 import { trackingRoutes } from '../modules/tracking/tracking.routes';
 import { notificationRoutes } from '../modules/notifications/notification.routes';
 import { supportRoutes } from '../modules/support/support.routes';
+import { vendorRoutes } from '../modules/vendor/vendor.routes';
 
 const router = Router();
 
@@ -50,5 +51,8 @@ router.use('/orders', orderRoutes);
 router.use('/tracking', trackingRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/support', supportRoutes);
+
+// Vendor & Merchant Module (Multi-Module Subsystem)
+router.use('/vendor', vendorRoutes);
 
 export const apiRouter = router;
