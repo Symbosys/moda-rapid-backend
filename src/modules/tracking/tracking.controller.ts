@@ -8,7 +8,7 @@ export class TrackingController {
 
   getTrackingStatus = async (req: Request, res: Response): Promise<void> => {
     const orderId = req.params.orderId;
-    const userId = req.user?.userId || 'anonymous';
+    const userId = req.user!.userId;
     const trackingData = await this.trackingService.getTrackingStatus(orderId, userId);
 
     ApiResponse.success(res, trackingData, 'Tracking status fetched successfully', HttpStatus.OK);

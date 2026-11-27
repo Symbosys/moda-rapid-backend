@@ -1,5 +1,4 @@
-import { OrderService, OrderClientModel } from '../orders/order.service';
-import { NotFoundError } from '../../common/errors/app-error';
+import { OrderService } from '../orders/order.service';
 
 export interface TrackingDataResponse {
   orderId: string;
@@ -20,11 +19,8 @@ export interface TrackingDataResponse {
     rating: number;
     vehicleNumber: string;
     avatar: string;
-    currentLocation: {
-      latitude: number;
-      longitude: number;
-    };
-  };
+    currentLocation?: { latitude: number; longitude: number };
+  } | null;
   deliveryAddress: {
     houseNo: string;
     area: string;
@@ -33,57 +29,14 @@ export interface TrackingDataResponse {
   };
   store: {
     name: string;
-    address: string;
-    latitude: number;
-    longitude: number;
   };
 }
 
 export class TrackingService {
   constructor(private readonly orderService: OrderService = new OrderService()) {}
 
-  async getTrackingStatus(orderId: string, userId = 'test_user'): Promise<TrackingDataResponse> {
-    let order: OrderClientModel;
-
-    try {
-      order = await this.orderService.getOrderById(orderId, userId);
-    } catch {
-      // Default sample fallback order matching OrderTrackingScreen
-      order = {
-        id: orderId,
-        shopId: 's1',
-        shopName: 'Style Studio',
-        deliveryAddress: {
-          id: 'addr_1',
-          tag: 'Home',
-          houseNo: 'Flat 302, Green Valley Apartment',
-          area: 'Kanke Road',
-          city: 'Ranchi',
-          pincode: '834008',
-          contactPhone: '+91 98765 43210',
-        },
-        items: [],
-        subtotal: 1299,
-        deliveryFee: 0,
-        platformFee: 15,
-        tax: 65,
-        discount: 80,
-        totalAmount: 1299,
-        paymentMethod: 'Online Payment (UPI)',
-        isPaid: true,
-        orderStatus: 'OUT_FOR_DELIVERY',
-        stepIndex: 7,
-        placedAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-        estimatedDeliveryMinutes: 12,
-        deliveryPartner: {
-          name: 'Rahul Sharma',
-          phone: '+91 98111 22334',
-          rating: 4.9,
-          vehicleNumber: 'DL 03 AB 4591',
-          avatar: '🛵',
-        },
-      };
-    }
+  async getTrackingStatus(orderId: string, userId: string): Promise<TrackingDataResponse> {
+    const order = await this.orderService.getOrderById(orderId, userId, false);
 
     const milestoneSteps = [
       { status: 'ORDER_PLACED', label: 'Order Placed', stepIndex: 1 },
@@ -111,17 +64,7 @@ export class TrackingService {
       placedAt: order.placedAt,
       estimatedDeliveryMinutes: order.estimatedDeliveryMinutes,
       milestones,
-      deliveryPartner: {
-        name: order.deliveryPartner?.name || 'Rahul Sharma',
-        phone: order.deliveryPartner?.phone || '+91 98111 22334',
-        rating: order.deliveryPartner?.rating || 4.9,
-        vehicleNumber: order.deliveryPartner?.vehicleNumber || 'DL 03 AB 4591',
-        avatar: order.deliveryPartner?.avatar || '🛵',
-        currentLocation: {
-          latitude: 28.5610,
-          longitude: 77.2045,
-        },
-      },
+      deliveryPartner: order.deliveryPartner ?? null,
       deliveryAddress: {
         houseNo: order.deliveryAddress.houseNo,
         area: order.deliveryAddress.area,
@@ -130,9 +73,6 @@ export class TrackingService {
       },
       store: {
         name: order.shopName,
-        address: 'Shop 12, Main Market, Green Park',
-        latitude: 28.5590,
-        longitude: 77.2010,
       },
     };
   }

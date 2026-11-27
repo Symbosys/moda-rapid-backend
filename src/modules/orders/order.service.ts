@@ -61,6 +61,7 @@ export interface OrderClientModel {
     rating: number;
     vehicleNumber: string;
     avatar: string;
+    currentLocation?: { latitude: number; longitude: number };
   };
   cancellationReason?: string | null;
   returnStatus?: string | null;
@@ -99,14 +100,15 @@ export class OrderService {
           rating: o.assignment.partner.rating,
           vehicleNumber: o.assignment.partner.vehicleNumber,
           avatar: o.assignment.partner.avatar,
+          currentLocation:
+            o.assignment.partner.latitude != null && o.assignment.partner.longitude != null
+              ? {
+                  latitude: o.assignment.partner.latitude,
+                  longitude: o.assignment.partner.longitude,
+                }
+              : undefined,
         }
-      : {
-          name: 'Rahul Sharma',
-          phone: '+91 98111 22334',
-          rating: 4.9,
-          vehicleNumber: 'DL 03 AB 4591',
-          avatar: '🛵',
-        };
+      : undefined;
 
     const formattedPaymentMethod =
       o.paymentMethod === 'UPI'
@@ -241,13 +243,6 @@ export class OrderService {
       stepIndex: 1,
       placedAt: new Date().toISOString(),
       estimatedDeliveryMinutes: 25,
-      deliveryPartner: {
-        name: 'Rahul Sharma',
-        phone: '+91 98111 22334',
-        rating: 4.9,
-        vehicleNumber: 'DL 03 AB 4591',
-        avatar: '🛵',
-      },
     };
 
     // Store in-memory for immediate client fallback
@@ -273,18 +268,22 @@ export class OrderService {
     };
   }
 
-  async getUserOrders(userId: string): Promise<OrderClientModel[]> {
+  async getUserOrders(userId: string, includeSamples = true): Promise<OrderClientModel[]> {
+    const memoryOrders = OrderService.localOrders.get(userId) ?? [];
     try {
       const dbOrders = await this.orderRepo.findByUserId(userId);
       if (dbOrders.length > 0) {
-        return dbOrders.map((o) => this.mapToClientModel(o));
+        const persistedIds = new Set(dbOrders.map((order) => order.id));
+        return [
+          ...memoryOrders.filter((order) => !persistedIds.has(order.id)),
+          ...dbOrders.map((order) => this.mapToClientModel(order)),
+        ];
       }
     } catch {
       // offline pass
     }
 
-    const memoryOrders = OrderService.localOrders.get(userId);
-    if (memoryOrders && memoryOrders.length > 0) {
+    if (memoryOrders.length > 0 || !includeSamples) {
       return memoryOrders;
     }
 
@@ -349,8 +348,8 @@ export class OrderService {
     ];
   }
 
-  async getOrderById(orderId: string, userId: string): Promise<OrderClientModel> {
-    const list = await this.getUserOrders(userId);
+  async getOrderById(orderId: string, userId: string, includeSamples = true): Promise<OrderClientModel> {
+    const list = await this.getUserOrders(userId, includeSamples);
     const found = list.find((o) => o.id === orderId);
 
     if (!found) {
@@ -408,11 +407,6 @@ export class OrderService {
 
     // Broadcast real-time status update to connected Flutter clients via Socket.io
     TrackingGateway.emitOrderStatusUpdate(orderId, nextStatus, nextStepIndex);
-
-    // If OUT_FOR_DELIVERY, stream rider position
-    if (nextStatus === 'OUT_FOR_DELIVERY') {
-      TrackingGateway.emitRiderLocation(orderId, 28.5610, 77.2045, 142.0);
-    }
 
     return updated;
   }
